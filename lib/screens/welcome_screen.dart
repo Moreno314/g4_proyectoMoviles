@@ -6,7 +6,7 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("RepoFisi")),
+      appBar: AppBar(title: const Text("InfoQuiz")),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -14,7 +14,7 @@ class WelcomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                "Ven a visitar el repositorio de la Facultad de Sistemas e Informática. ¡Colabora, investiga y publica!",
+                "Ven a visitar InfoQuiz el banco de preguntas de examenes de la FISI",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 28,
@@ -22,7 +22,7 @@ class WelcomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               const Text(
-                "En nuestro repositorio podrás encontrar una gran cantidad de proyectos de diferentes tipos. Únete a nosotros y encuentra lo que estás buscando.",
+                "En nuestro aplicativo podras encontrar una cantidad inmensa de preguntas para que puedas afrontar de mejor manera tus practicas calificadas y tus examenes parciales del ciclo",
               ),
               const SizedBox(height: 20),
               ElevatedButton(

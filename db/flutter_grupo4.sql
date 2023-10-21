@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-10-2023 a las 05:22:46
+-- Tiempo de generación: 21-10-2023 a las 15:13:09
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -44,6 +44,32 @@ INSERT INTO `category` (`id`, `name`, `create_date`) VALUES
 (4, 'IOT', ''),
 (5, 'IA', ''),
 (6, 'Probabilidad', '');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `login_register`
+--
+
+CREATE TABLE `login_register` (
+  `id` int(11) NOT NULL,
+  `name` text NOT NULL,
+  `username` text NOT NULL,
+  `password` text NOT NULL,
+  `status` varchar(100) NOT NULL DEFAULT 'User'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `login_register`
+--
+
+INSERT INTO `login_register` (`id`, `name`, `username`, `password`, `status`) VALUES
+(1, 'grupo4', 'grupo4@gmail.com', '123', 'Admin'),
+(3, 'grupo41', 'grupo41@gmail.com', '12345', 'User'),
+(4, 'Alejandro', 'alejandro.more@gmail.com', '123456', 'User'),
+(5, 'samir', 'samir@gmail.com', '12345', 'User'),
+(6, 'miracle', 'miracle@gmail.com', '123', 'User'),
+(7, 'Jean', 'Jean@gmail.com', '123', 'User');
 
 -- --------------------------------------------------------
 
@@ -111,6 +137,12 @@ ALTER TABLE `category`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `login_register`
+--
+ALTER TABLE `login_register`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `post_table`
 --
 ALTER TABLE `post_table`
@@ -121,10 +153,10 @@ ALTER TABLE `post_table`
 --
 
 --
--- AUTO_INCREMENT de la tabla `post_table`
+-- AUTO_INCREMENT de la tabla `login_register`
 --
-ALTER TABLE `post_table`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+ALTER TABLE `login_register`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

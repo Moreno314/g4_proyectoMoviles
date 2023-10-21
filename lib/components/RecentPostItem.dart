@@ -110,7 +110,7 @@ class _RecentItemState extends State<RecentItem> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    widget.autor,
+                    'Por: ' + widget.autor,
                     style: TextStyle(color: Colors.grey),
                   ),
                 ),

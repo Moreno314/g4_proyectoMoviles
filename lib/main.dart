@@ -3,6 +3,9 @@ import 'package:intl/intl.dart';
 import 'package:parcial_grupo4/components/CategoryListItem.dart';
 import 'package:parcial_grupo4/components/RecentPostItem.dart';
 import 'package:parcial_grupo4/components/TopPostCard.dart';
+import 'package:parcial_grupo4/page/ContactUs.dart';
+import 'package:parcial_grupo4/page/Login.dart';
+import 'package:parcial_grupo4/page/aboutUS.dart';
 import 'package:parcial_grupo4/screens/welcome_screen.dart';
 import 'package:parcial_grupo4/screens/login.dart';
 import 'package:parcial_grupo4/screens/splash_screen.dart'; // Importa el splash screen
@@ -34,6 +37,10 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
+  final name;
+  final email;
+  MyHomePage({this.name = "Guest", this.email = ""});
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -43,6 +50,116 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    Widget menuDrawer() {
+      return Drawer(
+        child: ListView(
+          children: <Widget>[
+            UserAccountsDrawerHeader(
+              decoration: BoxDecoration(color: Colors.pinkAccent),
+              currentAccountPicture: GestureDetector(
+                child: CircleAvatar(
+                  backgroundColor: Colors.white,
+                  child: Icon(Icons.person),
+                ),
+              ),
+              accountName: Text(widget.name),
+              accountEmail: Text(widget.email),
+            ),
+            ListTile(
+              onTap: () {
+                debugPrint("Home");
+              },
+              leading: Icon(
+                Icons.home,
+                color: Colors.green,
+              ),
+              title: Text(
+                'Home',
+                style: TextStyle(color: Colors.green),
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AboutUs(),
+                  ),
+                );
+                debugPrint("Acerca del sitio");
+              },
+              leading: Icon(
+                Icons.label,
+                color: Colors.grey,
+              ),
+              title: Text(
+                'Acerca del sitio',
+                style: TextStyle(color: Colors.grey),
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ContactUs(),
+                  ),
+                );
+                debugPrint("Contactanos");
+              },
+              leading: Icon(
+                Icons.contacts,
+                color: Colors.amber,
+              ),
+              title: Text(
+                'Contactanos',
+                style: TextStyle(color: Colors.amber),
+              ),
+            ),
+            widget.name == "Guest"
+                ? ListTile(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Login(),
+                        ),
+                      );
+                      debugPrint("Login");
+                    },
+                    leading: Icon(
+                      Icons.lock,
+                      color: Colors.red,
+                    ),
+                    title: Text(
+                      'Login',
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  )
+                : ListTile(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MyHomePage(),
+                        ),
+                      );
+                      debugPrint("Login");
+                    },
+                    leading: Icon(
+                      Icons.lock_open,
+                      color: Colors.red,
+                    ),
+                    title: Text(
+                      'Logout',
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  )
+          ],
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
@@ -64,120 +181,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      drawer: Drawer(
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Container(
-                height: 180,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(
-                      "https://images.pexels.com/photos/1831234/pexels-photo-1831234.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-                    ),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child: const Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text(
-                        "Grupo 4 - Sistemas Móviles",
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text(
-                        "grupo4@gmail.com",
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16.0),
-              ListTile(
-                leading: const Icon(Icons.home, size: 32.0),
-                title: const Text(
-                  "Home",
-                  style: TextStyle(fontSize: 18.0),
-                ),
-              ),
-              ListTile(
-                leading: const Icon(Icons.business, size: 32.0),
-                title: const Text(
-                  "Proyectos",
-                  style: TextStyle(fontSize: 18.0),
-                ),
-              ),
-              ListTile(
-                leading: const Icon(Icons.chat, size: 32.0),
-                title: const Text(
-                  "Discusiones",
-                  style: TextStyle(fontSize: 18.0),
-                ),
-              ),
-              ListTile(
-                leading: const Icon(Icons.forum, size: 32.0),
-                title: const Text(
-                  "Foro",
-                  style: TextStyle(fontSize: 18.0),
-                ),
-              ),
-              const Divider(
-                color: Colors.blue,
-                thickness: 2,
-              ),
-              ListTile(
-                leading: const Icon(Icons.folder, size: 32.0),
-                title: const Text(
-                  "Recursos",
-                  style: TextStyle(fontSize: 18.0),
-                ),
-              ),
-              ExpansionTile(
-                leading: const Icon(Icons.folder, size: 32.0),
-                title: const Text(
-                  "Tus proyectos",
-                  style: TextStyle(fontSize: 18.0),
-                ),
-                children: <Widget>[
-                  SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        ListTile(
-                          title: const Text(
-                            "Favoritos",
-                            style: TextStyle(fontSize: 18.0),
-                          ),
-                        ),
-                        ListTile(
-                          title: const Text(
-                            "Todos",
-                            style: TextStyle(fontSize: 18.0),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
+      drawer: menuDrawer(),
       body: ListView(
         children: <Widget>[
           Padding(

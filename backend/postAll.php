@@ -1,7 +1,7 @@
 <?php
     
 	header("Access-Control-Allow-Origin: *");
-	$db = mysqli_connect("localhost", "root", "123456", "flutter_grupo4");
+	$db = mysqli_connect("localhost", "root", "", "flutter_grupo4");
     
     if (!$db) {
         echo "Database connect error: " . mysqli_error($db);

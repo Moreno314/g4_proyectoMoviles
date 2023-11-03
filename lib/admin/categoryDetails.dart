@@ -45,7 +45,7 @@ class _CategoryDetailsState extends State<CategoryDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Category Details'),
+        title: Text('Detalles de cursos'),
         actions: <Widget>[
           IconButton(
               onPressed: () {

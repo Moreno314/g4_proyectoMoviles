@@ -8,7 +8,7 @@ import 'package:parcial_grupo4/page/Login.dart';
 import 'package:parcial_grupo4/page/aboutUS.dart';
 import 'package:parcial_grupo4/screens/welcome_screen.dart';
 import 'package:parcial_grupo4/screens/login.dart';
-import 'package:parcial_grupo4/screens/splash_screen.dart'; // Importa el splash screen
+import 'package:parcial_grupo4/screens/splash_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -23,14 +23,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: '/splash', // Ruta inicial, muestra el splash screen
+      initialRoute: '/splash',
       routes: {
-        '/splash': (context) => SplashScreen(), // Ruta para el splash screen
-        '/welcome': (context) =>
-            WelcomeScreen(), // Ruta para la pantalla de bienvenida
-        '/home': (context) => MyHomePage(), // Ruta para la página principal
-        '/login': (context) =>
-            LoginScreen(), // Ruta para la pantalla de inicio de sesión
+        '/splash': (context) => SplashScreen(),
+        '/welcome': (context) => WelcomeScreen(),
+        '/home': (context) => MyHomePage(),
+        '/login': (context) => LoginScreen(),
       },
     );
   }
@@ -39,6 +37,7 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   final name;
   final email;
+
   MyHomePage({this.name = "Guest", this.email = ""});
 
   @override
@@ -50,12 +49,40 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    Widget menuDrawer() {
-      return Drawer(
+    return Scaffold(
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: Colors.white,
+        elevation: 1,
+        actions: <Widget>[
+          Container(
+            width: 200,
+            height: 40,
+            padding: EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: TextField(
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(vertical: 10),
+                hintText: 'Search',
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: Colors.grey,
+                ),
+                border: InputBorder.none,
+              ),
+            ),
+          ),
+          SizedBox(width: 10),
+        ],
+      ),
+      drawer: Drawer(
         child: ListView(
           children: <Widget>[
             UserAccountsDrawerHeader(
-              decoration: BoxDecoration(color: Colors.pinkAccent),
+              decoration: BoxDecoration(color: Colors.blue),
               currentAccountPicture: GestureDetector(
                 child: CircleAvatar(
                   backgroundColor: Colors.white,
@@ -109,11 +136,11 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               leading: Icon(
                 Icons.contacts,
-                color: Colors.amber,
+                color: Colors.lightBlue,
               ),
               title: Text(
                 'Contactanos',
-                style: TextStyle(color: Colors.amber),
+                style: TextStyle(color: Colors.lightBlue),
               ),
             ),
             widget.name == "Guest"
@@ -157,31 +184,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   )
           ],
         ),
-      );
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.black),
-        backgroundColor: Colors.white,
-        elevation: 1,
-        actions: <Widget>[
-          Container(
-            width: 150,
-            height: 50,
-            child: TextField(
-              decoration: InputDecoration(
-                labelText: 'Search',
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: Colors.grey,
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
-      drawer: menuDrawer(),
       body: ListView(
         children: <Widget>[
           Padding(
@@ -191,38 +194,47 @@ class _MyHomePageState extends State<MyHomePage> {
               style: TextStyle(fontSize: 25, fontFamily: 'OpenSans'),
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  curdate,
-                  style: TextStyle(
-                      fontSize: 18, fontFamily: 'OpenSans', color: Colors.grey),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Icon(
-                  Icons.today,
-                  color: Colors.pink,
-                ),
-              ),
-            ],
-          ),
-          TopPostCard(), // Asegúrate de que TopPostCard tenga scrollDirection: Axis.horizontal
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              child: Text(
-                'Cursos más vistos',
-                style: TextStyle(fontSize: 25, fontFamily: 'OpenSans'),
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  curdate,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontFamily: 'OpenSans',
+                    color: Colors.grey,
+                  ),
+                ),
+                Icon(
+                  Icons.today,
+                  color: Colors.blue,
+                ),
+              ],
+            ),
+          ),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(
+              children: [
+                TopPostCard(),
+                SizedBox(width: 8),
+                TopPostCard(),
+                SizedBox(width: 8),
+                TopPostCard(),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Cursos más vistos',
+              style: TextStyle(fontSize: 25, fontFamily: 'OpenSans'),
             ),
           ),
           CategoryListItem(),
-
           RecentPostItem(),
         ],
       ),

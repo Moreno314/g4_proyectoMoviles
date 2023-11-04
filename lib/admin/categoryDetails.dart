@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
 import 'package:parcial_grupo4/admin/addEditCategory.dart';
 
 class CategoryDetails extends StatefulWidget {
@@ -24,8 +23,6 @@ class _CategoryDetailsState extends State<CategoryDetails> {
         setState(() {
           category = jsonData;
         });
-        //print(jsonData);
-        //return jsonData;
       } else {
         print("Error en la solicitud HTTP: ${response.statusCode}");
       }
@@ -36,7 +33,6 @@ class _CategoryDetailsState extends State<CategoryDetails> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getAllCategory();
   }
@@ -48,36 +44,43 @@ class _CategoryDetailsState extends State<CategoryDetails> {
         title: Text('Detalles de cursos'),
         actions: <Widget>[
           IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AddEditCategory(),
-                  ),
-                );
-              },
-              icon: Icon(Icons.add))
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddEditCategory(),
+                ),
+              );
+            },
+            icon: Icon(Icons.add),
+          )
         ],
       ),
-      body: ListView.builder(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListView.builder(
           itemCount: category.length,
           itemBuilder: (context, index) {
             return Card(
               elevation: 2,
+              margin: EdgeInsets.symmetric(vertical: 8.0),
               child: ListTile(
-                leading: IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AddEditCategory(
-                                  categoryList: category,
-                                  index: index,
-                                )));
-                  },
-                  icon: Icon(Icons.edit),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddEditCategory(
+                        categoryList: category,
+                        index: index,
+                      ),
+                    ),
+                  );
+                },
+                leading: Icon(Icons.edit),
+                title: Text(
+                  category[index]['name'],
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                title: Text(category[index]['name']),
                 trailing: IconButton(
                   onPressed: () async {
                     var url = Uri.parse(
@@ -87,16 +90,16 @@ class _CategoryDetailsState extends State<CategoryDetails> {
                     });
                     if (response.statusCode == 200) {
                       showDialog(
-                        context: (context),
+                        context: context,
                         builder: (context) => AlertDialog(
                           title: Text("Mensaje"),
-                          content: Text("Category Deleted Succesful"),
+                          content: Text("Categoría eliminada exitosamente"),
                           actions: <Widget>[
-                            ElevatedButton(
+                            TextButton(
                               onPressed: () {
                                 Navigator.pop(context);
                               },
-                              child: Text("Cancel"),
+                              child: Text("Cerrar"),
                             )
                           ],
                         ),
@@ -107,7 +110,9 @@ class _CategoryDetailsState extends State<CategoryDetails> {
                 ),
               ),
             );
-          }),
+          },
+        ),
+      ),
     );
   }
 }

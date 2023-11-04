@@ -10,7 +10,6 @@ class TopPostCard extends StatefulWidget {
 }
 
 class _TopPostCardState extends State<TopPostCard> {
-  //List postData=List();
   List<dynamic> postData = [];
 
   Future showAllPost() async {
@@ -23,8 +22,6 @@ class _TopPostCardState extends State<TopPostCard> {
         setState(() {
           postData = jsonData;
         });
-        //print(jsonData);
-        //return jsonData;
       } else {
         print("Error en la solicitud HTTP: ${response.statusCode}");
       }
@@ -35,7 +32,6 @@ class _TopPostCardState extends State<TopPostCard> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     showAllPost();
   }
@@ -46,11 +42,8 @@ class _TopPostCardState extends State<TopPostCard> {
       height: 200,
       width: MediaQuery.of(context).size.width,
       child: SingleChildScrollView(
-        // Utiliza SingleChildScrollView en lugar de ListView
-        scrollDirection:
-            Axis.horizontal, // Habilita el desplazamiento horizontal
+        scrollDirection: Axis.horizontal,
         child: Row(
-          // Usamos un Row para contener los elementos horizontalmente
           children: postData.map((post) {
             return NewPostItem(
               autor: post['autor'],
@@ -71,162 +64,120 @@ class _TopPostCardState extends State<TopPostCard> {
   }
 }
 
-class NewPostItem extends StatefulWidget {
-  final imagen;
-  final autor;
-  final post_date;
-  final comentarios;
-  final total_like;
-  final titulo;
-  final cuerpo;
-  final nombre_curso;
-  final create_date;
+class NewPostItem extends StatelessWidget {
+  final String imagen;
+  final String autor;
+  final String post_date;
+  final String comentarios;
+  final String total_like;
+  final String titulo;
+  final String cuerpo;
+  final String nombre_curso;
+  final String create_date;
 
-  NewPostItem(
-      {this.imagen,
-      this.autor,
-      this.post_date,
-      this.comentarios,
-      this.total_like,
-      this.titulo,
-      this.cuerpo,
-      this.nombre_curso,
-      this.create_date});
+  NewPostItem({
+    required this.imagen,
+    required this.autor,
+    required this.post_date,
+    required this.comentarios,
+    required this.total_like,
+    required this.titulo,
+    required this.cuerpo,
+    required this.nombre_curso,
+    required this.create_date,
+  });
 
-  @override
-  _NewPostItemState createState() => _NewPostItemState();
-}
-
-class _NewPostItemState extends State<NewPostItem> {
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            height: 200,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              color: Colors.amber,
-              borderRadius: BorderRadius.circular(10),
-              gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [Colors.blue, Colors.grey]),
-            ),
-            //color: Colors.amber,
+    return Container(
+      margin: EdgeInsets.all(8),
+      padding: EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 7,
+            offset: Offset(0, 3), // changes position of shadow
           ),
-        ),
-        Positioned(
-          top: 30,
-          left: 30,
-          child: CircleAvatar(
-            radius: 20,
-            //child: Icon(Icons.person),
-            backgroundImage: NetworkImage(widget.imagen),
-          ),
-        ),
-        Positioned(
-            top: 30,
-            left: 80,
-            child: Text(
-              widget.autor,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'OpenSans'),
-            )),
-        Positioned(
-            top: 30,
-            left: 220,
-            child: Text(
-              widget.post_date,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'OpenSans'),
-            )),
-        Positioned(
-          top: 50,
-          left: 100,
-          child: Icon(
-            Icons.comment,
-            color: Colors.white,
-          ),
-        ),
-        Positioned(
-            top: 50,
-            left: 140,
-            child: Text(
-              widget.comentarios,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'OpenSans'),
-            )),
-        Positioned(
-          top: 50,
-          left: 170,
-          child: Icon(
-            Icons.label,
-            color: Colors.white,
-          ),
-        ),
-        Positioned(
-            top: 50,
-            left: 200,
-            child: Text(
-              widget.total_like,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'OpenSans'),
-            )),
-        Positioned(
-            top: 100,
-            left: 30,
-            child: Text(
-              widget.titulo,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'OpenSans'),
-            )),
-        Positioned(
-            top: 146,
-            left: 30,
-            child: Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            )),
-        Positioned(
-            top: 150,
-            left: 60,
-            child: InkWell(
-              child: Text(
-                "Read More",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'OpenSans'),
+        ],
+      ),
+      width: MediaQuery.of(context).size.width * 0.8,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              CircleAvatar(
+                radius: 20,
+                backgroundImage: NetworkImage(imagen),
               ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PostDetails(
-                      titulo: widget.titulo,
-                      imagen: widget.imagen,
-                      autor: widget.autor,
-                      cuerpo: widget.cuerpo,
-                      post_date: widget.post_date,
-                    ),
+              SizedBox(width: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    autor,
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                );
-              },
-            )),
-      ],
+                  Text(
+                    post_date,
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 10),
+          Text(
+            titulo,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Row(
+                children: [
+                  Icon(Icons.comment),
+                  SizedBox(width: 5),
+                  Text(comentarios),
+                ],
+              ),
+              Row(
+                children: [
+                  Icon(Icons.favorite),
+                  SizedBox(width: 5),
+                  Text(total_like),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 10),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PostDetails(
+                    titulo: titulo,
+                    imagen: imagen,
+                    autor: autor,
+                    cuerpo: cuerpo,
+                    post_date: post_date,
+                  ),
+                ),
+              );
+            },
+            child: Text('Read More'),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -39,7 +39,7 @@ class _DashboardState extends State<Dashboard> {
                 color: Colors.green,
               ),
               title: Text(
-                'Home',
+                'Inicio',
                 style: TextStyle(color: Colors.green),
               ),
             ),
@@ -51,15 +51,15 @@ class _DashboardState extends State<Dashboard> {
                     builder: (context) => CategoryDetails(),
                   ),
                 );
-                debugPrint("Add Category");
+                debugPrint("Gestionar Cursos");
               },
               leading: Icon(
-                Icons.label,
-                color: Colors.grey,
+                Icons.school,
+                color: Colors.blue,
               ),
               title: Text(
-                'Add Category',
-                style: TextStyle(color: Colors.grey),
+                'Gestionar Cursos',
+                style: TextStyle(color: Colors.blue),
               ),
             ),
             ListTile(
@@ -70,15 +70,43 @@ class _DashboardState extends State<Dashboard> {
                     builder: (context) => PostDetails(),
                   ),
                 );
-                debugPrint("Añadir Post");
+                debugPrint("Administrar Publicaciones");
               },
               leading: Icon(
-                Icons.contacts,
-                color: Colors.amber,
+                Icons.library_books,
+                color: Colors.orange,
               ),
               title: Text(
-                'Añadir Post',
-                style: TextStyle(color: Colors.blue),
+                'Administrar Publicaciones',
+                style: TextStyle(color: Colors.orange),
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                // Simulación de una función genérica
+                debugPrint("Administrar Alumnos");
+              },
+              leading: Icon(
+                Icons.person,
+                color: Colors.deepPurple,
+              ),
+              title: Text(
+                'Administrar Alumnos',
+                style: TextStyle(color: Colors.deepPurple),
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                // Simulación de una función genérica
+                debugPrint("Reportes");
+              },
+              leading: Icon(
+                Icons.insert_chart,
+                color: Colors.red,
+              ),
+              title: Text(
+                'Generar Reportes',
+                style: TextStyle(color: Colors.red),
               ),
             ),
             widget.name == "Guest"
@@ -97,7 +125,7 @@ class _DashboardState extends State<Dashboard> {
                       color: Colors.red,
                     ),
                     title: Text(
-                      'Login',
+                      'Iniciar Sesión',
                       style: TextStyle(color: Colors.red),
                     ),
                   )
@@ -109,15 +137,15 @@ class _DashboardState extends State<Dashboard> {
                           builder: (context) => MyHomePage(),
                         ),
                       );
-                      debugPrint("Login");
+                      debugPrint("Cerrar Sesión");
                     },
                     leading: Icon(
                       Icons.lock_open,
-                      color: Colors.red,
+                      color: Colors.blue,
                     ),
                     title: Text(
-                      'Logout',
-                      style: TextStyle(color: Colors.red),
+                      'Cerrar Sesión',
+                      style: TextStyle(color: Colors.blue),
                     ),
                   )
           ],
@@ -130,7 +158,99 @@ class _DashboardState extends State<Dashboard> {
         title: Text('Dashboard'),
       ),
       drawer: menuDrawer(),
-      body: Container(),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'Bienvenido Administrador',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Aquí podrás administrar los elementos relacionados con la facultad de ingeniería de sistemas.',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 20),
+            _buildFunctionCard(
+              title: 'Gestionar Cursos',
+              description: 'Agrega, edita o elimina cursos disponibles.',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CategoryDetails(),
+                  ),
+                );
+              },
+              color: Colors.blue,
+            ),
+            SizedBox(height: 10),
+            _buildFunctionCard(
+              title: 'Administrar Publicaciones',
+              description:
+                  'Administra publicaciones, preguntas y contenido relacionado con los cursos.',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PostDetails(),
+                  ),
+                );
+              },
+              color: Colors.orange,
+            ),
+            // Otras funciones simuladas
+            _buildFunctionCard(
+              title: 'Administrar Alumnos',
+              description: 'Gestiona la información de los estudiantes.',
+              onPressed: () {
+                debugPrint("Administrar Alumnos");
+              },
+              color: Colors.deepPurple,
+            ),
+            _buildFunctionCard(
+              title: 'Analisis de sentimientos',
+              description: 'Obtén las conclusiones por cada pregunta',
+              onPressed: () {
+                debugPrint("Reportes");
+              },
+              color: Colors.red,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFunctionCard({
+    required String title,
+    required String description,
+    required VoidCallback onPressed,
+    required Color color,
+  }) {
+    return Card(
+      elevation: 2,
+      child: ListTile(
+        title: Text(
+          title,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        subtitle: Text(description),
+        onTap: onPressed,
+        leading: CircleAvatar(
+          backgroundColor: color,
+          child: Icon(Icons.star, color: Colors.white),
+        ),
+      ),
     );
   }
 }

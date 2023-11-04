@@ -23,8 +23,6 @@ class _PostDetailsState extends State<PostDetails> {
         setState(() {
           post = jsonData;
         });
-        //print(jsonData);
-        //return jsonData;
       } else {
         print("Error en la solicitud HTTP: ${response.statusCode}");
       }
@@ -35,7 +33,6 @@ class _PostDetailsState extends State<PostDetails> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getAllPost();
   }
@@ -60,37 +57,59 @@ class _PostDetailsState extends State<PostDetails> {
         ],
       ),
       body: ListView.builder(
-          itemCount: post.length,
-          itemBuilder: (context, index) {
-            return Card(
-              elevation: 2,
-              child: ListTile(
-                leading: IconButton(
-                  icon: Icon(Icons.edit),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AddEditPost(
-                          postList: post,
-                          index: index,
-                        ),
+        itemCount: post.length,
+        itemBuilder: (context, index) {
+          return Container(
+            margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 1,
+                  blurRadius: 3,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+            child: ListTile(
+              leading: IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddEditPost(
+                        postList: post,
+                        index: index,
                       ),
-                    );
-                  },
-                ),
-                title: Text(post[index]['titulo']),
-                subtitle: Text(
-                  post[index]['cuerpo'],
-                  maxLines: 2,
-                ),
-                trailing: IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () {},
+                    ),
+                  );
+                },
+              ),
+              title: Text(
+                post[index]['titulo'],
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
                 ),
               ),
-            );
-          }),
+              subtitle: Text(
+                post[index]['cuerpo'],
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              trailing: IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {
+                  // Lógica para eliminar la publicación
+                },
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }

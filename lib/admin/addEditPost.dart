@@ -1,9 +1,6 @@
-//import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-//import 'package:image_picker/image_picker.dart';
 
 class AddEditPost extends StatefulWidget {
   final postList;
@@ -15,9 +12,6 @@ class AddEditPost extends StatefulWidget {
 }
 
 class _AddEditPostState extends State<AddEditPost> {
-  //File _image;
-  //final picker = ImagePicker();
-
   Object? selectedCategory;
   List<dynamic> categoryItem = [];
 
@@ -25,15 +19,8 @@ class _AddEditPostState extends State<AddEditPost> {
   TextEditingController body = TextEditingController();
 
   bool editMode = false;
-/*
-  Future choiceImage() async {
-    var pickedImage = await picker.getImage(source: ImageSource.gallery);
-    setState(() {
-      _image = File(pickedImage.path);
-    });
-  }*/
 
-  Future AddEditPost() async {
+  Future addEditPost() async {
     var url = Uri.parse("http://192.168.0.10/g4_avance/addPost.php");
     var request = http.MultipartRequest("POST", url);
     request.fields['title'] = title.text;
@@ -56,8 +43,6 @@ class _AddEditPostState extends State<AddEditPost> {
         setState(() {
           categoryItem = jsonData;
         });
-        //print(jsonData);
-        //return jsonData;
       } else {
         print("Error en la solicitud HTTP: ${response.statusCode}");
       }
@@ -68,7 +53,6 @@ class _AddEditPostState extends State<AddEditPost> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getAllCategory();
     if (widget.index != null) {
@@ -82,53 +66,34 @@ class _AddEditPostState extends State<AddEditPost> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(editMode ? 'Update' : 'Añade una pregunta'),
+        title: Text(editMode ? 'Actualizar' : 'Añade una pregunta'),
       ),
-      body: ListView(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
+      body: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            TextField(
               controller: title,
-              decoration: InputDecoration(labelText: 'Titulo de la pregunta'),
+              decoration: InputDecoration(
+                labelText: 'Título de la pregunta',
+                border: OutlineInputBorder(),
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
+            SizedBox(height: 12),
+            TextField(
               controller: body,
               maxLines: 4,
-              decoration:
-                  InputDecoration(labelText: 'Descripcion de la pregunta'),
+              decoration: InputDecoration(
+                labelText: 'Descripción de la pregunta',
+                border: OutlineInputBorder(),
+              ),
             ),
-          ),
-          IconButton(
-            onPressed: () {
-              //choiceImage();
-            },
-            icon: Icon(
-              Icons.image,
-              size: 50,
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          /*
-          Container(
-            child:
-                _image == null ? Text('No image selected') : Image.file(_image),
-            width: 100,
-            height: 100,
-          ),
-          */
-          SizedBox(
-            height: 20,
-          ),
-          DropdownButton(
+            SizedBox(height: 12),
+            DropdownButton(
               isExpanded: true,
               value: selectedCategory,
-              hint: Text('Select Category '),
+              hint: Text('Selecciona una categoría'),
               items: categoryItem.map((category) {
                 return DropdownMenuItem(
                   value: category['name'],
@@ -139,17 +104,17 @@ class _AddEditPostState extends State<AddEditPost> {
                 setState(() {
                   selectedCategory = newValue;
                 });
-              }),
-          SizedBox(
-            height: 10,
-          ),
-          ElevatedButton(
-            child: Text('Save Post'),
-            onPressed: () {
-              AddEditPost();
-            },
-          ),
-        ],
+              },
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              child: Text('Guardar Pregunta'),
+              onPressed: () {
+                addEditPost();
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

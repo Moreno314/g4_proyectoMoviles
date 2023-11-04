@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'package:http/http.dart';
 
 class PostDetails extends StatelessWidget {
   final imagen;
@@ -18,6 +17,7 @@ class PostDetails extends StatelessWidget {
         title: Text("Detalles de la pregunta"),
       ),
       body: Container(
+        padding: EdgeInsets.all(15),
         child: ListView(
           children: <Widget>[
             Padding(
@@ -25,23 +25,35 @@ class PostDetails extends StatelessWidget {
               child: Text(
                 titulo,
                 style: TextStyle(
-                    fontSize: 25,
-                    fontFamily: 'OpenSans',
-                    fontWeight: FontWeight.bold),
+                  fontSize: 25,
+                  fontFamily: 'OpenSans',
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-            SizedBox(
-              height: 20,
-            ),
+            SizedBox(height: 20),
             Container(
-              child: Image.network(
-                imagen,
-                height: 250,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.network(
+                  imagen,
+                  height: 250,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-            SizedBox(
-              height: 20,
-            ),
+            SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
@@ -51,9 +63,7 @@ class PostDetails extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
-              height: 20,
-            ),
+            SizedBox(height: 20),
             Row(
               children: <Widget>[
                 Padding(
@@ -65,9 +75,7 @@ class PostDetails extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
-                  width: 5,
-                ),
+                SizedBox(width: 5),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
@@ -80,42 +88,43 @@ class PostDetails extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
-              height: 20,
-            ),
+            SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 "Area de comentarios",
                 style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'OpenSans'),
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'OpenSans',
+                ),
               ),
             ),
-            Container(
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextField(
-                      decoration:
-                          InputDecoration(labelText: 'Ingresa comentario'),
+            Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Ingresa comentario',
+                      border: OutlineInputBorder(),
+                      filled: true,
+                      fillColor: Colors.grey[200],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: MaterialButton(
-                      color: Colors.blue,
-                      child: Text(
-                        'Publica',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onPressed: () {},
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.blue,
+                      onPrimary: Colors.white,
                     ),
+                    child: Text('Publica'),
+                    onPressed: () {},
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         ),

@@ -22,8 +22,6 @@ class _CategoryListItemState extends State<CategoryListItem> {
         setState(() {
           categories = jsonData;
         });
-        //print(jsonData);
-        // return jsonData;
       } else {
         print("Error en la solicitud HTTP: ${response.statusCode}");
       }
@@ -34,7 +32,6 @@ class _CategoryListItemState extends State<CategoryListItem> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getAllCategory();
   }
@@ -44,50 +41,63 @@ class _CategoryListItemState extends State<CategoryListItem> {
     return Container(
       height: 70,
       child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: categories.length,
-          itemBuilder: (context, index) {
-            return CategoryItem(
-              categoryName: categories[index]['name'],
-            );
-          }),
+        scrollDirection: Axis.horizontal,
+        itemCount: categories.length,
+        itemBuilder: (context, index) {
+          return CategoryItem(
+            categoryName: categories[index]['name'],
+          );
+        },
+      ),
     );
   }
 }
 
-class CategoryItem extends StatefulWidget {
-  final categoryName;
-  CategoryItem({this.categoryName});
+class CategoryItem extends StatelessWidget {
+  final String categoryName;
 
-  @override
-  _CategoryItemState createState() => _CategoryItemState();
-}
+  CategoryItem({required this.categoryName});
 
-class _CategoryItemState extends State<CategoryItem> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      //height: 70,
-      //width:50,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: InkWell(
-          child: Text(
-            widget.categoryName,
-            style: TextStyle(
-                color: Colors.grey, fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SelectCategoryBy(
-                  categoryName: widget.categoryName,
-                ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SelectCategoryBy(
+                categoryName: categoryName,
               ),
-            );
-            debugPrint(widget.categoryName);
-          },
+            ),
+          );
+          debugPrint(categoryName);
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(25),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.4),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: Offset(0, 3),
+              ),
+            ],
+          ),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+          child: Center(
+            child: Text(
+              categoryName,
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
         ),
       ),
     );

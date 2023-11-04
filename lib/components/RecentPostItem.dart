@@ -34,7 +34,6 @@ class _RecentPostItemState extends State<RecentPostItem> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     recentPostData();
   }
@@ -75,65 +74,77 @@ class RecentItem extends StatefulWidget {
 class _RecentItemState extends State<RecentItem> {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PostDetails(
-                        imagen: widget.imagen,
-                        autor: widget.autor,
-                        titulo: widget.titulo,
-                        post_date: widget.date,
-                        cuerpo: widget.cuerpo,
-                      ),
-                    ),
-                  );
-                  debugPrint(widget.titulo);
-                },
-                child: Text(
-                  widget.titulo,
-                  style: TextStyle(fontSize: 20, fontFamily: 'OpenSans'),
-                ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PostDetails(
+                imagen: widget.imagen,
+                autor: widget.autor,
+                titulo: widget.titulo,
+                post_date: widget.date,
+                cuerpo: widget.cuerpo,
               ),
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          );
+          debugPrint(widget.titulo);
+        },
+        child: Card(
+          elevation: 4,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Por: ' + widget.autor,
-                    style: TextStyle(color: Colors.grey),
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        widget.titulo,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontFamily: 'OpenSans',
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Row(
+                        children: <Widget>[
+                          Text(
+                            'Por: ' + widget.autor,
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          Text(
+                            ' Publicado el: ' + widget.date,
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    ' publicado el : ' + widget.date,
-                    style: TextStyle(color: Colors.grey),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    padding: EdgeInsets.all(5),
+                    child: Image.network(
+                      widget.imagen,
+                      height: 70,
+                      width: 70,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ],
             ),
-          ],
-        ),
-        Container(
-          padding: EdgeInsets.all(5),
-          child: Image.network(
-            widget.imagen,
-            height: 70,
-            width: 70,
           ),
         ),
-      ],
+      ),
     );
   }
 }

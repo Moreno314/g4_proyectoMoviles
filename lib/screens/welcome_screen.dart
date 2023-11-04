@@ -27,7 +27,7 @@ class WelcomeScreen extends StatelessWidget {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/login');
+                  Navigator.pushNamed(context, '/home');
                 },
                 child: const Text("Ingresar"),
               ),

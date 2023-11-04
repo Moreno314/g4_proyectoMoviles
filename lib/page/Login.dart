@@ -42,7 +42,10 @@ class _LoginState extends State<Login> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Dashboard(),
+                builder: (context) => Dashboard(
+                  name: userData['name'],
+                  username: userData['username'],
+                ),
               ),
             );
           } else {

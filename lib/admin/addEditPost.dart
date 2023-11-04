@@ -33,6 +33,19 @@ class _AddEditPostState extends State<AddEditPost> {
     });
   }*/
 
+  Future AddEditPost() async {
+    var url = Uri.parse("http://192.168.0.10/g4_avance/addPost.php");
+    var request = http.MultipartRequest("POST", url);
+    request.fields['title'] = title.text;
+    request.fields['body'] = body.text;
+    request.fields['category_name'] = selectedCategory.toString();
+
+    var response = await request.send();
+    if (response.statusCode == 200) {
+      print(title.text);
+    }
+  }
+
   Future getAllCategory() async {
     try {
       var url = Uri.parse("http://192.168.0.10/g4_avance/CategoryAll.php");
@@ -132,7 +145,9 @@ class _AddEditPostState extends State<AddEditPost> {
           ),
           ElevatedButton(
             child: Text('Save Post'),
-            onPressed: () {},
+            onPressed: () {
+              AddEditPost();
+            },
           ),
         ],
       ),

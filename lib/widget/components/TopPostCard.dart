@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
-import 'package:parcial_grupo4/page/postDetails.dart';
+import 'package:parcial_grupo4/models/post_model.dart';
+import 'package:parcial_grupo4/widget/page/postDetails.dart';
 
 class TopPostCard extends StatefulWidget {
   @override
@@ -10,17 +10,30 @@ class TopPostCard extends StatefulWidget {
 }
 
 class _TopPostCardState extends State<TopPostCard> {
-  List<dynamic> postData = [];
+  List<NewPostItem> postData = [];
 
-  Future showAllPost() async {
+  Future<void> showAllPost() async {
     try {
-      var url = Uri.parse("http://192.168.0.10/g4_avance/postAll.php");
+      var url = Uri.parse("http://192.168.0.4/g4_avance/postAll.php");
       var response =
           await http.get(url, headers: {"Accept": "application/json"});
       if (response.statusCode == 200) {
         var jsonData = json.decode(response.body);
         setState(() {
-          postData = jsonData;
+          postData = (jsonData as List)
+              .map((post) => NewPostItem(
+                    autor: post['autor'],
+                    cuerpo: post['cuerpo'],
+                    nombre_curso: post['nombre_curso'],
+                    comentarios: post['comentarios'],
+                    imagen:
+                        'https://media.istockphoto.com/id/636332456/es/foto/concepto-de-educaci%C3%B3n-en-l%C3%ADnea.jpg?s=2048x2048&w=is&k=20&c=QvENnRD__o7HfImDdKYsYWLiYUcoWNH9iEByQx-kOZk=',
+                    post_date: post['post_date'],
+                    total_like: post['total_like'],
+                    create_date: post['create_date'],
+                    titulo: post['titulo'],
+                  ))
+              .toList();
         });
       } else {
         print("Error en la solicitud HTTP: ${response.statusCode}");
@@ -45,18 +58,7 @@ class _TopPostCardState extends State<TopPostCard> {
         scrollDirection: Axis.horizontal,
         child: Row(
           children: postData.map((post) {
-            return NewPostItem(
-              autor: post['autor'],
-              cuerpo: post['cuerpo'],
-              nombre_curso: post['nombre_curso'],
-              comentarios: post['comentarios'],
-              imagen:
-                  'https://media.istockphoto.com/id/636332456/es/foto/concepto-de-educaci%C3%B3n-en-l%C3%ADnea.jpg?s=2048x2048&w=is&k=20&c=QvENnRD__o7HfImDdKYsYWLiYUcoWNH9iEByQx-kOZk=',
-              post_date: post['post_date'],
-              total_like: post['total_like'],
-              create_date: post['create_date'],
-              titulo: post['titulo'],
-            );
+            return NewPostWidget(post: post);
           }).toList(),
         ),
       ),
@@ -64,28 +66,10 @@ class _TopPostCardState extends State<TopPostCard> {
   }
 }
 
-class NewPostItem extends StatelessWidget {
-  final String imagen;
-  final String autor;
-  final String post_date;
-  final String comentarios;
-  final String total_like;
-  final String titulo;
-  final String cuerpo;
-  final String nombre_curso;
-  final String create_date;
+class NewPostWidget extends StatelessWidget {
+  final NewPostItem post;
 
-  NewPostItem({
-    required this.imagen,
-    required this.autor,
-    required this.post_date,
-    required this.comentarios,
-    required this.total_like,
-    required this.titulo,
-    required this.cuerpo,
-    required this.nombre_curso,
-    required this.create_date,
-  });
+  NewPostWidget({required this.post});
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +84,7 @@ class NewPostItem extends StatelessWidget {
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 2,
             blurRadius: 7,
-            offset: Offset(0, 3), // changes position of shadow
+            offset: Offset(0, 3),
           ),
         ],
       ),
@@ -108,22 +92,23 @@ class NewPostItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          // Contenido del post usando los datos de NewPostItem
           Row(
             children: <Widget>[
               CircleAvatar(
                 radius: 20,
-                backgroundImage: NetworkImage(imagen),
+                backgroundImage: NetworkImage(post.imagen),
               ),
               SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    autor,
+                    post.autor,
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    post_date,
+                    post.post_date,
                     style: TextStyle(color: Colors.grey),
                   ),
                 ],
@@ -132,7 +117,7 @@ class NewPostItem extends StatelessWidget {
           ),
           SizedBox(height: 10),
           Text(
-            titulo,
+            post.titulo,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16,
@@ -146,14 +131,14 @@ class NewPostItem extends StatelessWidget {
                 children: [
                   Icon(Icons.comment),
                   SizedBox(width: 5),
-                  Text(comentarios),
+                  Text(post.comentarios),
                 ],
               ),
               Row(
                 children: [
                   Icon(Icons.favorite),
                   SizedBox(width: 5),
-                  Text(total_like),
+                  Text(post.total_like),
                 ],
               ),
             ],
@@ -165,11 +150,11 @@ class NewPostItem extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => PostDetails(
-                    titulo: titulo,
-                    imagen: imagen,
-                    autor: autor,
-                    cuerpo: cuerpo,
-                    post_date: post_date,
+                    titulo: post.titulo,
+                    imagen: post.imagen,
+                    autor: post.autor,
+                    cuerpo: post.cuerpo,
+                    post_date: post.post_date,
                   ),
                 ),
               );

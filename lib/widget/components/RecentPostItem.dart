@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:parcial_grupo4/models/recent_post_model.dart';
 
-import 'package:parcial_grupo4/page/postDetails.dart';
+import 'package:parcial_grupo4/widget/page/postDetails.dart';
+// Asegúrate de cambiar 'nombre_de_tu_proyecto'
 
 class RecentPostItem extends StatefulWidget {
   @override
@@ -10,20 +12,27 @@ class RecentPostItem extends StatefulWidget {
 }
 
 class _RecentPostItemState extends State<RecentPostItem> {
-  List<dynamic> recentPost = [];
+  List<RecentPostItemModel> recentPost = [];
 
-  Future recentPostData() async {
+  Future<void> recentPostData() async {
     try {
-      var url = Uri.parse("http://192.168.0.10/g4_avance/postAll.php");
+      var url = Uri.parse("http://192.168.0.4/g4_avance/postAll.php");
       var response =
           await http.get(url, headers: {"Accept": "application/json"});
       if (response.statusCode == 200) {
         var jsonData = json.decode(response.body);
         setState(() {
-          recentPost = jsonData;
+          recentPost = (jsonData as List)
+              .map((post) => RecentPostItemModel(
+                    titulo: post['titulo'],
+                    autor: post['autor'],
+                    date: post['create_date'],
+                    cuerpo: post['cuerpo'],
+                    imagen:
+                        'https://media.istockphoto.com/id/636332456/es/foto/concepto-de-educaci%C3%B3n-en-l%C3%ADnea.jpg?s=2048x2048&w=is&k=20&c=QvENnRD__o7HfImDdKYsYWLiYUcoWNH9iEByQx-kOZk=',
+                  ))
+              .toList();
         });
-        print(jsonData);
-        return jsonData;
       } else {
         print("Error en la solicitud HTTP: ${response.statusCode}");
       }
@@ -46,12 +55,7 @@ class _RecentPostItemState extends State<RecentPostItem> {
         itemCount: recentPost.length,
         itemBuilder: (context, index) {
           return RecentItem(
-            titulo: recentPost[index]['titulo'],
-            autor: recentPost[index]['autor'],
-            date: recentPost[index]['create_date'],
-            cuerpo: recentPost[index]['cuerpo'],
-            imagen:
-                'https://media.istockphoto.com/id/636332456/es/foto/concepto-de-educaci%C3%B3n-en-l%C3%ADnea.jpg?s=2048x2048&w=is&k=20&c=QvENnRD__o7HfImDdKYsYWLiYUcoWNH9iEByQx-kOZk=',
+            post: recentPost[index],
           );
         },
       ),
@@ -59,19 +63,13 @@ class _RecentPostItemState extends State<RecentPostItem> {
   }
 }
 
-class RecentItem extends StatefulWidget {
-  final titulo;
-  final imagen;
-  final autor;
-  final date;
-  final cuerpo;
-  RecentItem({this.titulo, this.imagen, this.autor, this.date, this.cuerpo});
+class RecentItem extends StatelessWidget {
+  final RecentPostItemModel post;
 
-  @override
-  _RecentItemState createState() => _RecentItemState();
-}
+  RecentItem({
+    required this.post,
+  });
 
-class _RecentItemState extends State<RecentItem> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -82,15 +80,15 @@ class _RecentItemState extends State<RecentItem> {
             context,
             MaterialPageRoute(
               builder: (context) => PostDetails(
-                imagen: widget.imagen,
-                autor: widget.autor,
-                titulo: widget.titulo,
-                post_date: widget.date,
-                cuerpo: widget.cuerpo,
+                imagen: post.imagen,
+                autor: post.autor,
+                titulo: post.titulo,
+                post_date: post.date,
+                cuerpo: post.cuerpo,
               ),
             ),
           );
-          debugPrint(widget.titulo);
+          debugPrint(post.titulo);
         },
         child: Card(
           elevation: 4,
@@ -105,7 +103,7 @@ class _RecentItemState extends State<RecentItem> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        widget.titulo,
+                        post.titulo,
                         style: TextStyle(
                           fontSize: 20,
                           fontFamily: 'OpenSans',
@@ -116,11 +114,11 @@ class _RecentItemState extends State<RecentItem> {
                       Row(
                         children: <Widget>[
                           Text(
-                            'Por: ' + widget.autor,
+                            'Por: ' + post.autor,
                             style: TextStyle(color: Colors.grey),
                           ),
                           Text(
-                            ' Publicado el: ' + widget.date,
+                            ' Publicado el: ' + post.date,
                             style: TextStyle(color: Colors.grey),
                           ),
                         ],
@@ -133,7 +131,7 @@ class _RecentItemState extends State<RecentItem> {
                   child: Container(
                     padding: EdgeInsets.all(5),
                     child: Image.network(
-                      widget.imagen,
+                      post.imagen,
                       height: 70,
                       width: 70,
                       fit: BoxFit.cover,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:parcial_grupo4/screens/welcome_screen.dart';
+import 'package:parcial_grupo4/widget/screens/welcome_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   @override

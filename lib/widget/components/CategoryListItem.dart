@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:parcial_grupo4/models/category_item_model.dart';
 
-import 'package:parcial_grupo4/page/SelectCategoryBy.dart';
+import 'package:parcial_grupo4/widget/page/SelectCategoryBy.dart';
+// Asegúrate de cambiar 'nombre_de_tu_proyecto'
 
 class CategoryListItem extends StatefulWidget {
   @override
@@ -10,17 +12,21 @@ class CategoryListItem extends StatefulWidget {
 }
 
 class _CategoryListItemState extends State<CategoryListItem> {
-  List<dynamic> categories = [];
+  List<CategoryItemModel> categories = [];
 
-  Future getAllCategory() async {
+  Future<void> getAllCategory() async {
     try {
-      var url = Uri.parse("http://192.168.0.10/g4_avance/CategoryAll.php");
+      var url = Uri.parse("http://192.168.0.4/g4_avance/CategoryAll.php");
       var response =
           await http.get(url, headers: {"Accept": "application/json"});
       if (response.statusCode == 200) {
         var jsonData = json.decode(response.body);
         setState(() {
-          categories = jsonData;
+          categories = (jsonData as List)
+              .map((category) => CategoryItemModel(
+                    name: category['name'],
+                  ))
+              .toList();
         });
       } else {
         print("Error en la solicitud HTTP: ${response.statusCode}");
@@ -45,18 +51,17 @@ class _CategoryListItemState extends State<CategoryListItem> {
         itemCount: categories.length,
         itemBuilder: (context, index) {
           return CategoryItem(
-            categoryName: categories[index]['name'],
+            category: categories[index],
           );
         },
       ),
     );
   }
 }
-
 class CategoryItem extends StatelessWidget {
-  final String categoryName;
+  final CategoryItemModel category;
 
-  CategoryItem({required this.categoryName});
+  CategoryItem({required this.category});
 
   @override
   Widget build(BuildContext context) {
@@ -68,21 +73,21 @@ class CategoryItem extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => SelectCategoryBy(
-                categoryName: categoryName,
+                categoryName: category.name,
               ),
             ),
           );
-          debugPrint(categoryName);
+          debugPrint(category.name);
         },
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(25),
+            borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.4),
+                color: Colors.grey.withOpacity(0.5),
                 spreadRadius: 2,
-                blurRadius: 5,
+                blurRadius: 7,
                 offset: Offset(0, 3),
               ),
             ],
@@ -90,7 +95,7 @@ class CategoryItem extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
           child: Center(
             child: Text(
-              categoryName,
+              category.name,
               style: TextStyle(
                 color: Colors.grey,
                 fontSize: 18,

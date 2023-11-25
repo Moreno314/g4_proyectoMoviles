@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:parcial_grupo4/admin/categoryDetails.dart';
-import 'package:parcial_grupo4/admin/postDetails.dart';
+import 'package:parcial_grupo4/widget/admin/categoryDetails.dart';
+import 'package:parcial_grupo4/widget/admin/postDetails.dart';
 import 'package:parcial_grupo4/main.dart';
-import 'package:parcial_grupo4/page/Login.dart';
+import 'package:parcial_grupo4/widget/page/Login.dart';
 
 class Dashboard extends StatefulWidget {
   final name;

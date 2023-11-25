@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:parcial_grupo4/components/CategoryListItem.dart';
-import 'package:parcial_grupo4/components/RecentPostItem.dart';
-import 'package:parcial_grupo4/components/TopPostCard.dart';
-import 'package:parcial_grupo4/page/ContactUs.dart';
-import 'package:parcial_grupo4/page/Login.dart';
-import 'package:parcial_grupo4/page/aboutUS.dart';
-import 'package:parcial_grupo4/screens/welcome_screen.dart';
-import 'package:parcial_grupo4/screens/login.dart';
-import 'package:parcial_grupo4/screens/splash_screen.dart';
+import 'package:parcial_grupo4/widget/components/CategoryListItem.dart';
+import 'package:parcial_grupo4/widget/components/RecentPostItem.dart';
+import 'package:parcial_grupo4/widget/components/TopPostCard.dart';
+import 'package:parcial_grupo4/widget/page/ContactUs.dart';
+import 'package:parcial_grupo4/widget/page/Login.dart';
+import 'package:parcial_grupo4/widget/page/aboutUs.dart';
+import 'package:parcial_grupo4/widget/screens/welcome_screen.dart';
+import 'package:parcial_grupo4/widget/screens/login.dart';
+import 'package:parcial_grupo4/widget/screens/splash_screen.dart';
 
 void main() {
   runApp(MyApp());

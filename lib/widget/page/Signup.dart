@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:parcial_grupo4/admin/Dashboard.dart';
+import 'package:parcial_grupo4/widget/admin/Dashboard.dart';
 import 'package:parcial_grupo4/main.dart';
-import 'package:parcial_grupo4/page/Signup.dart';
+import 'package:parcial_grupo4/widget/page/Login.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class Login extends StatefulWidget {
+class Signup extends StatefulWidget {
   @override
-  _LoginState createState() => _LoginState();
+  _SignupState createState() => _SignupState();
 }
 
-class _LoginState extends State<Login> {
+class _SignupState extends State<Signup> {
   TextEditingController user = TextEditingController();
   TextEditingController pass = TextEditingController();
+  TextEditingController name = TextEditingController();
 
-  Future login() async {
+  Future signUp() async {
     try {
-      var url = Uri.parse("http://192.168.0.10/g4_avance/login.php");
-      var response = await http
-          .post(url, body: {"username": user.text, "password": pass.text});
+      var url = Uri.parse("http://192.168.0.4/g4_avance/register.php");
+      var response = await http.post(url, body: {
+        "username": user.text,
+        "password": pass.text,
+        "name": name.text
+      });
       if (response.statusCode == 200) {
         var userData = json.decode(response.body);
         if (userData == "ERROR") {
@@ -26,7 +30,7 @@ class _LoginState extends State<Login> {
             context: (context),
             builder: (context) => AlertDialog(
               title: Text("Mensaje"),
-              content: Text("Credenciales invalidas"),
+              content: Text("Este usuario ya existe"),
               actions: <Widget>[
                 ElevatedButton(
                   onPressed: () {
@@ -42,10 +46,7 @@ class _LoginState extends State<Login> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Dashboard(
-                  name: userData['name'],
-                  username: userData['username'],
-                ),
+                builder: (context) => Dashboard(),
               ),
             );
           } else {
@@ -63,7 +64,7 @@ class _LoginState extends State<Login> {
             context: (context),
             builder: (context) => AlertDialog(
               title: Text("Mensaje"),
-              content: Text("Login Successful"),
+              content: Text("Signup Successful"),
               actions: <Widget>[
                 ElevatedButton(
                   onPressed: () {
@@ -88,7 +89,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Login"),
+        title: Text("SignUp"),
       ),
       body: Stack(
         children: <Widget>[
@@ -100,13 +101,27 @@ class _LoginState extends State<Login> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "Login Here",
+                "Sign up aqui",
                 style: TextStyle(fontFamily: 'OpenSans', fontSize: 30),
               ),
             ),
           ),
           Positioned(
-            top: 200,
+            top: 150,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: name,
+                  decoration: InputDecoration(labelText: "Nombre"),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 230,
             child: Container(
               width: MediaQuery.of(context).size.width,
               height: 100,
@@ -120,7 +135,7 @@ class _LoginState extends State<Login> {
             ),
           ),
           Positioned(
-            top: 270,
+            top: 310,
             child: Container(
               width: MediaQuery.of(context).size.width,
               height: 100,
@@ -134,7 +149,7 @@ class _LoginState extends State<Login> {
             ),
           ),
           Positioned(
-              top: 350,
+              top: 380,
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 child: Padding(
@@ -142,11 +157,11 @@ class _LoginState extends State<Login> {
                   child: MaterialButton(
                     color: Colors.pink,
                     child: Text(
-                      "Login",
+                      "Sign up",
                       style: TextStyle(color: Colors.white),
                     ),
                     onPressed: () {
-                      login();
+                      signUp();
                     },
                   ),
                 ),
@@ -158,7 +173,7 @@ class _LoginState extends State<Login> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    "O Registrate",
+                    "O Ingresa",
                     style: TextStyle(color: Colors.pink),
                   ),
                 ),
@@ -171,14 +186,14 @@ class _LoginState extends State<Login> {
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
                       child: Text(
-                        "Click aqui para Registrarte",
+                        "Click aqui para Ingresar",
                         style: TextStyle(color: Colors.grey),
                       ),
                       onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Signup(),
+                            builder: (context) => Login(),
                           ),
                         );
                         debugPrint("Clikeado");

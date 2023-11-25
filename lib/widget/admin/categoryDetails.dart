@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:parcial_grupo4/admin/addEditCategory.dart';
+import 'package:parcial_grupo4/widget/admin/addEditCategory.dart';
 
 class CategoryDetails extends StatefulWidget {
   const CategoryDetails({Key? key}) : super(key: key);

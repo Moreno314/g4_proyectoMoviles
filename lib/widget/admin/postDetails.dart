@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:parcial_grupo4/admin/addEditPost.dart';
+import 'package:parcial_grupo4/widget/admin/addEditPost.dart';
 
 class PostDetails extends StatefulWidget {
   const PostDetails({Key? key}) : super(key: key);

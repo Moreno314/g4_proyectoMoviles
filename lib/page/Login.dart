@@ -16,7 +16,7 @@ class _LoginState extends State<Login> {
 
   Future login() async {
     try {
-      var url = Uri.parse("http://192.168.0.10/g4_avance/login.php");
+      var url = Uri.parse("http://192.168.0.11/g4_avance/login.php");
       var response = await http
           .post(url, body: {"username": user.text, "password": pass.text});
       if (response.statusCode == 200) {

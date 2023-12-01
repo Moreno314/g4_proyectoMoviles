@@ -12,9 +12,9 @@ class RecentPostItem extends StatefulWidget {
 class _RecentPostItemState extends State<RecentPostItem> {
   List<dynamic> recentPost = [];
 
-  Future recentPostData() async {
+  Future<void> recentPostData() async {
     try {
-      var url = Uri.parse("http://192.168.0.10/g4_avance/postAll.php");
+      var url = Uri.parse("http://192.168.0.11/g4_avance/postAll.php");
       var response =
           await http.get(url, headers: {"Accept": "application/json"});
       if (response.statusCode == 200) {

@@ -5,6 +5,8 @@ import 'dart:convert';
 import 'package:parcial_grupo4/page/postDetails.dart';
 
 class TopPostCard extends StatefulWidget {
+  final userEmail;
+  TopPostCard({this.userEmail});
   @override
   _TopPostCardState createState() => _TopPostCardState();
 }
@@ -12,9 +14,9 @@ class TopPostCard extends StatefulWidget {
 class _TopPostCardState extends State<TopPostCard> {
   List<dynamic> postData = [];
 
-  Future showAllPost() async {
+  Future<void> showAllPost() async {
     try {
-      var url = Uri.parse("http://192.168.0.10/g4_avance/postAll.php");
+      var url = Uri.parse("http://192.168.0.11/g4_avance/postAll.php");
       var response =
           await http.get(url, headers: {"Accept": "application/json"});
       if (response.statusCode == 200) {
@@ -33,11 +35,13 @@ class _TopPostCardState extends State<TopPostCard> {
   @override
   void initState() {
     super.initState();
+    print("TopPostCard userEmail: ${widget.userEmail}");
     showAllPost();
   }
 
   @override
   Widget build(BuildContext context) {
+    print("TopPostCard userEmail: ${widget.userEmail}");
     return Container(
       height: 200,
       width: MediaQuery.of(context).size.width,
@@ -46,6 +50,7 @@ class _TopPostCardState extends State<TopPostCard> {
         child: Row(
           children: postData.map((post) {
             return NewPostItem(
+              id: post['id'],
               autor: post['autor'],
               cuerpo: post['cuerpo'],
               nombre_curso: post['nombre_curso'],
@@ -56,6 +61,7 @@ class _TopPostCardState extends State<TopPostCard> {
               total_like: post['total_like'],
               create_date: post['create_date'],
               titulo: post['titulo'],
+              userEmail: widget.userEmail,
             );
           }).toList(),
         ),
@@ -64,7 +70,8 @@ class _TopPostCardState extends State<TopPostCard> {
   }
 }
 
-class NewPostItem extends StatelessWidget {
+class NewPostItem extends StatefulWidget {
+  final String id;
   final String imagen;
   final String autor;
   final String post_date;
@@ -74,19 +81,25 @@ class NewPostItem extends StatelessWidget {
   final String cuerpo;
   final String nombre_curso;
   final String create_date;
+  final String userEmail;
 
-  NewPostItem({
-    required this.imagen,
-    required this.autor,
-    required this.post_date,
-    required this.comentarios,
-    required this.total_like,
-    required this.titulo,
-    required this.cuerpo,
-    required this.nombre_curso,
-    required this.create_date,
-  });
+  NewPostItem(
+      {required this.id,
+      required this.imagen,
+      required this.autor,
+      required this.post_date,
+      required this.comentarios,
+      required this.total_like,
+      required this.titulo,
+      required this.cuerpo,
+      required this.nombre_curso,
+      required this.create_date,
+      required this.userEmail});
+  @override
+  _NewPostItemState createState() => _NewPostItemState();
+}
 
+class _NewPostItemState extends State<NewPostItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -112,18 +125,18 @@ class NewPostItem extends StatelessWidget {
             children: <Widget>[
               CircleAvatar(
                 radius: 20,
-                backgroundImage: NetworkImage(imagen),
+                backgroundImage: NetworkImage(widget.imagen),
               ),
               SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    autor,
+                    widget.autor,
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    post_date,
+                    widget.post_date,
                     style: TextStyle(color: Colors.grey),
                   ),
                 ],
@@ -132,7 +145,7 @@ class NewPostItem extends StatelessWidget {
           ),
           SizedBox(height: 10),
           Text(
-            titulo,
+            widget.titulo,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16,
@@ -146,14 +159,14 @@ class NewPostItem extends StatelessWidget {
                 children: [
                   Icon(Icons.comment),
                   SizedBox(width: 5),
-                  Text(comentarios),
+                  Text(widget.comentarios),
                 ],
               ),
               Row(
                 children: [
                   Icon(Icons.favorite),
                   SizedBox(width: 5),
-                  Text(total_like),
+                  Text(widget.total_like),
                 ],
               ),
             ],
@@ -165,11 +178,13 @@ class NewPostItem extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => PostDetails(
-                    titulo: titulo,
-                    imagen: imagen,
-                    autor: autor,
-                    cuerpo: cuerpo,
-                    post_date: post_date,
+                    id: widget.id,
+                    titulo: widget.titulo,
+                    imagen: widget.imagen,
+                    autor: widget.autor,
+                    cuerpo: widget.cuerpo,
+                    post_date: widget.post_date,
+                    userEmail: widget.userEmail,
                   ),
                 ),
               );

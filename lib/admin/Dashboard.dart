@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:parcial_grupo4/admin/Analisis.dart';
 import 'package:parcial_grupo4/admin/categoryDetails.dart';
 import 'package:parcial_grupo4/admin/postDetails.dart';
 import 'package:parcial_grupo4/main.dart';
@@ -221,7 +222,12 @@ class _DashboardState extends State<Dashboard> {
               title: 'Analisis de sentimientos',
               description: 'Obtén las conclusiones por cada pregunta',
               onPressed: () {
-                debugPrint("Reportes");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Analisis(),
+                  ),
+                );
               },
               color: Colors.red,
             ),

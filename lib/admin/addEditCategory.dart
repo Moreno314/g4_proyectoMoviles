@@ -17,7 +17,7 @@ class _AddEditCategoryState extends State<AddEditCategory> {
   Future AddEditCategory() async {
     if (categoryNameController.text != "") {
       if (editMode) {
-        var url = Uri.parse("http://192.168.0.10/g4_avance/updateCategory.php");
+        var url = Uri.parse("http://192.168.0.11/g4_avance/updateCategory.php");
         var response = await http.post(url, body: {
           "id": widget.categoryList[widget.index]['id'],
           "name": categoryNameController.text

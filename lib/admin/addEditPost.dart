@@ -21,7 +21,7 @@ class _AddEditPostState extends State<AddEditPost> {
   bool editMode = false;
 
   Future addEditPost() async {
-    var url = Uri.parse("http://192.168.0.10/g4_avance/addPost.php");
+    var url = Uri.parse("http://192.168.0.11/g4_avance/addPost.php");
     var request = http.MultipartRequest("POST", url);
     request.fields['title'] = title.text;
     request.fields['body'] = body.text;

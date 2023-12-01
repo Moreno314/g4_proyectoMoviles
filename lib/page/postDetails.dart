@@ -1,17 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
-class PostDetails extends StatelessWidget {
+import 'Login.dart';
+
+class PostDetails extends StatefulWidget {
+  final id;
   final imagen;
   final autor;
   final post_date;
   final titulo;
   final cuerpo;
+  final userEmail;
 
   PostDetails(
-      {this.imagen, this.autor, this.post_date, this.titulo, this.cuerpo});
+      {this.id,
+      this.userEmail = "ejemplo@gmail.com",
+      this.imagen,
+      this.autor,
+      this.post_date,
+      this.titulo,
+      this.cuerpo});
 
   @override
+  _PostDetailsState createState() => _PostDetailsState();
+}
+
+class _PostDetailsState extends State<PostDetails> {
+  @override
   Widget build(BuildContext context) {
+    TextEditingController commentsController = TextEditingController();
+
+    Future AddComments() async {
+      var url = Uri.parse("http://192.168.0.11/g4_avance/addComments.php");
+      var response = await http.post(url, body: {
+        "comment": commentsController.text,
+        "user_email": widget.userEmail,
+        "post_id": widget.id.toString(),
+      });
+      if (response.statusCode == 200) {
+        showDialog(
+          context: (context),
+          builder: (context) => AlertDialog(
+            title: Text("Mensaje"),
+            content: Text("Comentario Add Succesful"),
+            actions: <Widget>[
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("Cancel"),
+              )
+            ],
+          ),
+        );
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Detalles de la pregunta"),
@@ -23,7 +67,7 @@ class PostDetails extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                titulo,
+                widget.titulo,
                 style: TextStyle(
                   fontSize: 25,
                   fontFamily: 'OpenSans',
@@ -47,7 +91,7 @@ class PostDetails extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: Image.network(
-                  imagen,
+                  widget.imagen,
                   height: 250,
                   fit: BoxFit.cover,
                 ),
@@ -57,7 +101,7 @@ class PostDetails extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                cuerpo,
+                widget.cuerpo == null ? "" : widget.cuerpo,
                 style: TextStyle(
                   fontSize: 20,
                 ),
@@ -69,7 +113,7 @@ class PostDetails extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    "Por " + autor,
+                    "Por " + widget.autor,
                     style: TextStyle(
                       fontSize: 16,
                     ),
@@ -79,7 +123,7 @@ class PostDetails extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    "Publicado el " + post_date,
+                    "Publicado el " + widget.post_date,
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.grey,
@@ -100,32 +144,59 @@ class PostDetails extends StatelessWidget {
                 ),
               ),
             ),
-            Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Ingresa comentario',
-                      border: OutlineInputBorder(),
-                      filled: true,
-                      fillColor: Colors.grey[200],
+            Container(
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      onSubmitted: (value) {
+                        commentsController.text = value;
+                      },
+                      onChanged: (value) {
+                        print("User Email: ${widget.userEmail}");
+                        if (widget.userEmail == "") {
+                          showDialog(
+                            context: (context),
+                            builder: (context) => AlertDialog(
+                              title: Text("Mensaje"),
+                              content: Text("Inicia sesión para comentar"),
+                              actions: <Widget>[
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => Login(),
+                                      ),
+                                    );
+                                  },
+                                  child: Text("Login"),
+                                )
+                              ],
+                            ),
+                          );
+                        }
+                      },
+                      controller: commentsController,
+                      decoration: InputDecoration(labelText: "Enter"),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.blue,
-                      onPrimary: Colors.white,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: MaterialButton(
+                      child: Text(
+                        "Publicar",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onPressed: () {
+                        AddComments();
+                      },
                     ),
-                    child: Text('Publica'),
-                    onPressed: () {},
-                  ),
-                ),
-              ],
-            ),
+                  )
+                ],
+              ),
+            )
           ],
         ),
       ),

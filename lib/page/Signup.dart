@@ -17,7 +17,7 @@ class _SignupState extends State<Signup> {
 
   Future signUp() async {
     try {
-      var url = Uri.parse("http://192.168.0.10/g4_avance/register.php");
+      var url = Uri.parse("http://192.168.0.11/g4_avance/register.php");
       var response = await http.post(url, body: {
         "username": user.text,
         "password": pass.text,

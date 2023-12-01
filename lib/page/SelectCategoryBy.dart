@@ -17,7 +17,7 @@ class _SelectCategoryByState extends State<SelectCategoryBy> {
   Future categoryByData() async {
     try {
       //var url = Uri.parse("http://192.168.0.10/g4_avance/CategoryAll.php");
-      var url = Uri.parse("http://192.168.0.10/g4_avance/categoryByPost.php");
+      var url = Uri.parse("http://192.168.0.11/g4_avance/categoryByPost.php");
       var response = await http.post(url, body: {'name': widget.categoryName});
       if (response.statusCode == 200) {
         var jsonData = json.decode(response.body);

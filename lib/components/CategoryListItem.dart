@@ -14,7 +14,7 @@ class _CategoryListItemState extends State<CategoryListItem> {
 
   Future getAllCategory() async {
     try {
-      var url = Uri.parse("http://192.168.0.10/g4_avance/CategoryAll.php");
+      var url = Uri.parse("http://192.168.0.11/g4_avance/CategoryAll.php");
       var response =
           await http.get(url, headers: {"Accept": "application/json"});
       if (response.statusCode == 200) {

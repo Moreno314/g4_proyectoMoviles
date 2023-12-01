@@ -38,7 +38,7 @@ class MyHomePage extends StatefulWidget {
   final name;
   final email;
 
-  MyHomePage({this.name = "Guest", this.email = ""});
+  MyHomePage({this.name = "Guest", this.email = "ejemplo@gmail.com"});
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -214,18 +214,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
-            child: Row(
-              children: [
-                TopPostCard(),
-                SizedBox(width: 8),
-                TopPostCard(),
-                SizedBox(width: 8),
-                TopPostCard(),
-              ],
-            ),
+          TopPostCard(
+            userEmail: widget.email,
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
